@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillLink Chatbot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    #chat-container {
+      width: 350px;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 10px;
+      background: #f9f9f9;
+      display: none;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    #chatbox {
+      height: 250px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-bottom: 10px;
+      background: white;
+    }
+
+    .chat-btn {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      margin: 5px 2px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .chat-msg {
+      margin: 6px 0;
+    }
+
+    .bot {
+      color: #333;
+    }
+
+    .user {
+      color: #007bff;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<h2>SkillLink Chatbot Demo</h2>
+<h2>Select the the mode</h2>
+<button class="chat-btn" onclick="startChat('worker')"> SKILLED WORKER👷</button>
+<button class="chat-btn" onclick="startChat('user')">USER 👨‍👩‍👧</button>
+
+<div id="chat-container">
+  <div id="chatbox"></div>
+  <div id="buttons"></div>
+  <button class="chat-btn" onclick="closeChat()">Close</button>
+</div>
+
+<script>
+  const chatbox = document.getElementById("chatbox");
+  const buttons = document.getElementById("buttons");
+  const chatContainer = document.getElementById("chat-container");
+
+  let botType = "";
+
+  function startChat(type) {
+    botType = type;
+    chatContainer.style.display = "block";
+    chatbox.innerHTML = '';
+    showMessage("Hi there! How can I help you today?", "bot");
+
+    if (type === "worker") {
+      showButtons([
+        { text: "How to register?", reply: "Go to the registration page and fill your skill, name, NIC and contact info." },
+        { text: "Do I need a certificate?", reply: "You can register without a certificate, but you'll need one to get a verified badge." },
+        { text: "How long is verification?", reply: "Usually 1–2 working days after document submission." }
+      ]);
+    } else if (type === "user") {
+      showButtons([
+        { text: "How to find workers?", reply: "Use the search bar to filter by skill and location." },
+        { text: "Can I trust them?", reply: "Look for the 'Verified by Labour Dept' badge on their profile." },
+        { text: "Is this service free?", reply: "Yes, the platform is free to use for both workers and the public." }
+      ]);
+    }
+  }
+
+  function showMessage(message, sender = "bot") {
+    const msg = document.createElement("div");
+    msg.className = `chat-msg ${sender}`;
+    msg.innerText = message;
+    chatbox.appendChild(msg);
+    chatbox.scrollTop = chatbox.scrollHeight;
+  }
+
+  function showButtons(options) {
+    buttons.innerHTML = '';
+    options.forEach(opt => {
+      const btn = document.createElement("button");
+      btn.innerText = opt.text;
+      btn.className = "chat-btn";
+      btn.onclick = () => {
+        showMessage(opt.text, "user");
+        setTimeout(() => showMessage(opt.reply, "bot"), 600);
+      };
+      buttons.appendChild(btn);
+    });
+  }
+
+  function closeChat() {
+    chatContainer.style.display = "none";
+    chatbox.innerHTML = '';
+    buttons.innerHTML = '';
+  }
+</script>
+
+</body>
+</html>
